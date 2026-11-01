@@ -1,0 +1,120 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitLife | Mi panel</title>
+    <link rel="stylesheet" href="{% static 'dashboard/estilos.css' %}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">FitLife</div>
+        <div>
+            <a href="/">Inicio</a>
+            <a href="/panel/">Mi panel</a>
+                <form method="post" action="{% url 'logout' %}" style="display:inline; margin-left:15px;">
+                    {% csrf_token %}
+                    <button type="submit">Cerrar sesión</button>
+                </form>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>¡Hola, {{ request.user.username }}!</h1>
+        <p>Bienvenido a tu espacio personal de FitLife.</p>
+    </section>
+
+    <section class="contenedor">
+        <h2>Mi cuenta</h2>
+
+        <div class="tarjetas">
+
+            <div class="tarjeta">
+                <h3>Mi membresía</h3>
+
+                {% if membresia %}
+                    <p><strong>Plan:</strong> {{ membresia.plan.nombre }}</p>
+                    <p><strong>Estado:</strong> {{ membresia.get_estado_display }}</p>
+                    <p><strong>Fecha de inicio:</strong> {{ membresia.fecha_inicio|date:"d/m/Y" }}</p>
+                    <p><strong>Fecha de término:</strong> {{ membresia.fecha_termino|date:"d/m/Y" }}</p>
+                    <p><strong>Precio:</strong> ${{ membresia.plan.precio|floatformat:0 }}</p>
+                {% else %}
+                    <p>Actualmente no tienes una membresía registrada.</p>
+                {% endif %}
+            </div>
+
+            <div class="tarjeta">
+                <h3>Mis clases</h3>
+
+               {% for clase in clases_disponibles %}
+                   <p><strong>Clase:</strong> {{ clase.nombre }}</p>
+                   <p><strong>Instructor:</strong> {{ clase.instructor }}</p>
+                   <p><strong>Fecha:</strong> {{ clase.fecha_hora|date:"d/m/Y H:i" }}</p>
+                   <p><strong>Capacidad:</strong> {{ clase.capacidad }} personas</p>
+                   {% if clase.ya_reservada %}
+                    <p><strong>Ya tienes una reserva confirmada.</strong></p>
+                {% elif clase.en_lista_espera %}
+                    <p><strong>Ya estás en la lista de espera.</strong></p>
+                {% elif clase.ocupados < clase.capacidad %}
+<form method="post" action="{% url 'reservar_clase' clase.id %}">
+               {% csrf_token %}
+                   <button type="submit" class="boton">
+                     Reservar clase
+                   </button>
+                   </form>
+{% else %}
+<form method="post" action="{% url 'ingresar_lista_espera' clase.id %}">
+                       {% csrf_token %}
+                       <button type="submit" class="boton">Ingresar a lista de espera</button>
+                   </form>
+{% endif %}
+                   <hr>
+               {% empty %}
+                   <p>No hay clases programadas actualmente.</p>
+               {% endfor %}
+            </div>
+
+            <div class="tarjeta">
+                <h3>Mis reservas</h3>
+
+                {% for reserva in reservas %}
+                    <p><strong>Clase:</strong> {{ reserva.clase.nombre }}</p>
+                    <p><strong>Instructor:</strong> {{ reserva.clase.instructor }}</p>
+                    <p><strong>Fecha:</strong> {{ reserva.clase.fecha_hora|date:"d/m/Y H:i" }}</p>
+                    <p><strong>Estado:</strong> {{ reserva.get_estado_display }}</p>
+                    
+                    {% if reserva.estado == 'CONFIRMADA' %}
+                        <form method="post" action="{% url 'cancelar_reserva' reserva.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="boton">Cancelar reserva</button>
+                        </form>
+                    {% endif %}
+                    <hr>
+                {% empty %}
+                    <p>Actualmente no tienes reservas registradas.</p>
+                {% endfor %}
+            </div>
+
+            <div class="tarjeta">
+                <h3>Mis pagos</h3>
+                {% for pago in pagos %}
+                    <p><strong>Plan:</strong> {{ pago.membresia.plan.nombre }}</p>
+                    <p><strong>Monto:</strong> ${{ pago.monto|floatformat:0 }}</p>
+                    <p><strong>Fecha:</strong> {{ pago.fecha|date:"d/m/Y H:i" }}</p>
+                    <p><strong>Método:</strong> {{ pago.get_metodo_display }}</p>
+                    <p><strong>Estado:</strong> {{ pago.get_estado_display }}</p>
+                    <hr>
+                {% empty %}
+                    <p>Actualmente no tienes pagos registrados.</p>
+                {% endfor %}
+            </div>
+
+        </div>
+    </section>
+
+</body>
+</html>
+

@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitLife | Inicio</title>
+    <link rel="stylesheet" href="{% static 'dashboard/estilos.css' %}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{% url 'inicio' %}">FitLife</a>
+        </div>
+        <div>
+            <a href="{% url 'inicio' %}">Inicio</a>
+            <a href="#servicios">Servicios</a>
+
+            {% if user.is_authenticated %}
+
+             {% if user.is_staff %}
+            <a href="{% url 'admin:index' %}">Administración</a>
+            <a href="{% url 'control_acceso' %}">Control QR</a>
+            <a href="{% url 'dashboard_aforo' %}">Aforo</a>
+            {% else %}
+              <a href="{% url 'panel_cliente' %}">Mi panel</a>
+            {% endif %}
+
+                <form method="post" action="{% url 'logout' %}"
+                      style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="boton">Cerrar sesión</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="boton">
+                    Iniciar sesión
+                </a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Transforma tu bienestar con FitLife</h1>
+        <p>Organiza tus entrenamientos, administra tus membresías
+           y alcanza tus metas en un solo lugar.</p>
+        <a href="#servicios" class="boton">Conoce nuestros servicios</a>
+    </section>
+
+    <section class="contenedor" id="servicios">
+        <h2>Todo lo que necesitas en un solo lugar</h2>
+
+        <div class="tarjetas">
+
+            <div class="tarjeta">
+                <h3>Membresías</h3>
+                <p>Consulta tus planes y mantén el control de tu membresía.</p>
+                <p>
+                    <a href="{% url 'panel_cliente' %}" class="boton">
+                        Ir a mi panel
+                    </a>
+                </p>
+            </div>
+
+            <div class="tarjeta">
+                <h3>Clases</h3>
+                <p>Descubre las actividades y horarios disponibles.</p>
+                <p>
+                    <a href="{% url 'panel_cliente' %}" class="boton">
+                        Ir a mi panel
+                    </a>
+                </p>
+            </div>
+
+            <div class="tarjeta">
+                <h3>Reservas</h3>
+                <p>Organiza tus clases favoritas de manera sencilla.</p>
+                <p>
+                    <a href="{% url 'panel_cliente' %}" class="boton">
+                        Ir a mi panel
+                    </a>
+                </p>
+            </div>
+
+            <div class="tarjeta">
+                <h3>Pagos</h3>
+                <p>Consulta tu historial de pagos y movimientos.</p>
+                <p>
+                    <a href="{% url 'panel_cliente' %}" class="boton">
+                        Ir a mi panel
+                    </a>
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+</body>
+</html>

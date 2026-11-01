@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de acceso | FitLife</title>
+    <link rel="stylesheet" href="{% static 'dashboard/estilos.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <h2>FitLife</h2>
+        <a href="/">Inicio</a>
+    </nav>
+
+    <section class="hero">
+        <h1>Control de acceso QR</h1>
+        <p>Validación de membresías del gimnasio</p>
+    </section>
+
+    <section class="contenedor">
+        <div class="tarjeta">
+            <h2>Simular lectura de código QR</h2>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <label for="codigo_qr">Código del cliente</label>
+                <input
+                    type="text"
+                    id="codigo_qr"
+                    name="codigo_qr"
+                    placeholder="Ejemplo: FITLIFE-2"
+                    required
+                    autofocus
+                >
+
+                <div style="margin: 15px 0;">
+                    <label for="movimiento">Tipo de movimiento</label>
+                    <select id="movimiento" name="movimiento" required>
+                        <option value="ENTRADA">Entrada</option>
+                        <option value="SALIDA">Salida</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="boton">
+                    Validar acceso
+                </button>
+            </form>
+
+            {% if resultado %}
+                <hr>
+                {% if resultado.permitido %}
+                    <h2 style="color: green;">Acceso permitido</h2>
+                {% else %}
+                    <h2 style="color: red;">Acceso denegado</h2>
+                {% endif %}
+
+                {% if resultado.cliente %}
+                    <p><strong>Cliente:</strong> {{ resultado.cliente }}</p>
+                {% endif %}
+
+                <p>{{ resultado.mensaje }}</p>
+            {% endif %}
+        </div>
+    </section>
+</body>
+</html>

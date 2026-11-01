@@ -1,0 +1,103 @@
+/* Estilos generales */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5f8fc;
+    color: #243247;
+}
+
+/* Barra de navegación */
+.navbar {
+    background-color: #ffffff;
+    padding: 22px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+.logo {
+    font-size: 26px;
+    font-weight: bold;
+    color: #3478c0;
+}
+
+.navbar a {
+    color: #526174;
+    text-decoration: none;
+    margin-left: 25px;
+}
+
+/* Sección principal */
+.hero {
+    text-align: center;
+    padding: 100px 20px 70px;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 19px;
+    color: #68788c;
+}
+
+/* Botones */
+.boton {
+    display: inline-block;
+    background-color: #3478c0;
+    color: white;
+    padding: 14px 30px;
+    border-radius: 10px;
+    text-decoration: none;
+    margin-top: 25px;
+}
+
+.boton:hover {
+    background-color: #255e99;
+}
+
+/* Tarjetas */
+.contenedor {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px 20px 80px;
+}
+
+.tarjetas {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.tarjeta {
+    background-color: white;
+    padding: 30px 25px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.tarjeta h3 {
+    color: #3478c0;
+}
+
+/* Adaptación a celulares */
+@media (max-width: 768px) {
+    .tarjetas {
+        grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
+        font-size: 34px;
+    }
+
+    .navbar {
+        padding: 20px;
+    }
+}

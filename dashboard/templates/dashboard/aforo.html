@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="10">
+    <title>Dashboard de aforo | FitLife</title>
+    <link rel="stylesheet" href="{% static 'dashboard/estilos.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <h2>FitLife</h2>
+        <a href="/">Inicio</a>
+        <a href="{% url 'control_acceso' %}">Control QR</a>
+    </nav>
+
+    <section class="hero">
+        <h1>Dashboard de aforo</h1>
+        <p>Control de ocupación del gimnasio</p>
+    </section>
+
+    <section class="contenedor">
+        <div class="tarjetas">
+            <div class="tarjeta">
+                <h2>Personas dentro del gimnasio</h2>
+                <h1 style="font-size: 60px; color: #2563eb;">
+                    {{ total_personas }}
+                </h1>
+                <p>Actualización automática cada 10 segundos</p>
+            </div>
+
+            <div class="tarjeta">
+                <h2>Clientes presentes</h2>
+
+                {% for acceso in personas %}
+                    <p>
+                        <strong>{{ acceso.cliente.username }}</strong>
+                        <br>
+                        Ingreso: {{ acceso.fecha_hora|date:"d/m/Y H:i" }}
+                    </p>
+                    <hr>
+                {% empty %}
+                    <p>Actualmente no hay personas dentro del gimnasio.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</body>
+</html>
