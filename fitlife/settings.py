@@ -30,7 +30,7 @@ SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    '100.27.221.231',
+    '44.207.242.123',
     'ec2-100-27-221-231.compute-1.amazonaws.com',
     'localhost',
     '127.0.0.1',
