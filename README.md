@@ -64,9 +64,9 @@ La configuración exacta de las variables de entorno debe revisarse en fitlife/s
 El proyecto está desplegado en una instancia EC2 con Ubuntu, PostgreSQL, Gunicorn y Nginx.
 
 Dirección pública actual:
-http://3.83.236.76/
+http://44.207.242.123/
 
-La IP puede cambiar al reiniciar la instancia si no se utiliza una Elastic IP.
+La aplicación utiliza una Elastic IP asociada a EC2, que mantiene la dirección pública fija mientras se conserve su asignación.
 
 ## Seguridad
 
