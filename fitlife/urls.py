@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
-from django.urls import path
+from django.urls import path, include
 from dashboard.views import inicio
 from accounts.views import InicioSesionView, panel_cliente, reservar_clase, cancelar_reserva, ingresar_lista_espera
 
@@ -34,5 +34,6 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='inicio'), name='logout'),
     path('control-acceso/', control_acceso, name='control_acceso'),
     path('aforo/', dashboard_aforo, name='dashboard_aforo'),
+    path('membresias/', include('membresias.urls')),
     path('admin/', admin.site.urls),
 ]

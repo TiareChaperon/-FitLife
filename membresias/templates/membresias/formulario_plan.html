@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ titulo }} | FitLife{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+      href="{% static 'membresias/gestion.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="panel-gestion">
+
+    <div class="panel-encabezado">
+        <div>
+            <h1>{{ titulo }}</h1>
+            <p>Completa la información del plan de FitLife.</p>
+        </div>
+    </div>
+
+    <div class="formulario-contenedor">
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% if formulario.non_field_errors %}
+                <div class="error-formulario">
+                    {{ formulario.non_field_errors }}
+                </div>
+            {% endif %}
+
+            {% for campo in formulario %}
+                <div class="campo-formulario">
+
+                    <label for="{{ campo.id_for_label }}">
+                        {{ campo.label }}
+                    </label>
+
+                    {{ campo }}
+
+                    {% if campo.help_text %}
+                        <small>{{ campo.help_text }}</small>
+                    {% endif %}
+
+                    {% for error in campo.errors %}
+                        <p class="error-formulario">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+
+                </div>
+            {% endfor %}
+
+            <div class="acciones-formulario">
+                <button type="submit" class="boton">
+                    Guardar plan
+                </button>
+
+                <a href="{% url 'lista_planes' %}"
+                   class="boton-secundario">
+                    Cancelar
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}
