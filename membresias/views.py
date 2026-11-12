@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 
 from accounts.permisos import personal_requerido
-from .models import Plan
+from .models import Plan, Membresia
 from .forms import PlanForm
 from django.views.decorators.http import require_POST
 from django.db.models.deletion import ProtectedError
@@ -90,3 +90,16 @@ def eliminar_plan(request, plan_id):
         )
 
     return redirect('lista_planes')
+# Gestión de membresías
+
+@personal_requerido
+def lista_membresias(request):
+    membresias = (
+        Membresia.objects
+        .select_related('cliente', 'plan')
+        .order_by('-fecha_inicio')
+    )
+
+    return render(request, 'membresias/lista_membresias.html', {
+        'membresias': membresias
+    })

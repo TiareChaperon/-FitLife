@@ -1,0 +1,89 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gestión de membresías | FitLife{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'membresias/gestion.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="panel-gestion">
+
+    <div class="panel-encabezado">
+        <div>
+            <h1>Gestión de membresías</h1>
+            <p>Consulta las membresías de los clientes de FitLife.</p>
+        </div>
+    </div>
+
+    <div class="tabla-contenedor">
+        <table class="tabla-gestion">
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Plan</th>
+                    <th>Fecha de inicio</th>
+                    <th>Fecha de término</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for membresia in membresias %}
+                <tr>
+                    <td>
+                        <strong>{{ membresia.cliente.username }}</strong>
+                    </td>
+
+                    <td>
+                        {{ membresia.plan.nombre }}
+                    </td>
+
+                    <td>
+                        {{ membresia.fecha_inicio|date:"d/m/Y" }}
+                    </td>
+
+                    <td>
+                        {{ membresia.fecha_termino|date:"d/m/Y" }}
+                    </td>
+
+                    <td>
+                        {% if membresia.estado == 'ACTIVA' %}
+                            <span class="estado estado-activo">
+                                Activa
+                            </span>
+                        {% elif membresia.estado == 'VENCIDA' %}
+                            <span class="estado estado-inactivo">
+                                Vencida
+                            </span>
+                        {% else %}
+                            <span class="estado">
+                                Congelada
+                            </span>
+                        {% endif %}
+                    </td>
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="5">
+                        Todavía no hay membresías registradas.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div style="margin-top: 25px;">
+        <a href="{% url 'inicio' %}" class="boton-secundario">
+            Volver al inicio
+        </a>
+    </div>
+
+</section>
+
+{% endblock %}
